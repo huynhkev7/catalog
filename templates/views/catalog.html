@@ -1,0 +1,32 @@
+{% extends "index.html" %}
+{% block content %}
+	<div class="container rounded py-3 my-5 bg-light">
+		<div class="row">
+			<div class="col-4 border-right">
+				<h4 class="my-2">Categories</h4>
+				<ul class="list-unstyled">
+					{% for category in categories %}
+					<li>
+						<a href="{{ url_for('items_for_category', category_id=category.id) }}"><span class="text-success">{{category.name}}</span></a>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+			<div class="col-8">
+				<div class="d-flex flex-wrap my-2">
+					<h4>Latest Items</h4>
+					{% if user_in_session %}
+						<a href="{{ url_for('new_item') }}" class="btn btn-sm btn-primary ml-auto align-self-center">Add Item</a>
+					{% endif %}
+				</div>
+				<ul class="list-unstyled">
+					{% for item in latest_items %}
+					<li>
+						<a href="{{ url_for('item_details', category_id=item.category_id, item_id=item.id) }}"><span class="text-success">{{item.name}} ({{item.category.name}})</span></a>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "index.html" %}
+{% block content %}
+<form action="#", method="post" enctype="multipart/form-data">
+	<div class="container rounded py-3 my-5 bg-light">
+		<div class="row">
+			<div class="col-12">
+				<div class="d-flex flex-wrap my-2">
+					<h4>Edit Item</h4>
+					<div class="dropdown ml-auto align-self-center">
+						<label for="category">Category:</label>
+						<select name="category" class="btn btn-sm btn-info dropdown-toggle"
+							type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" required>
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+								{% for category in categories %}
+									<option class="dropdown-item" value="{{category.id}}"
+									{% if category.id == edited_item.category_id %} selected {% endif %}>{{category.name}}</option>
+								{% endfor %}
+							</div>
+						</select>
+					</div>			
+				</div>
+			</div>
+			<div class="col-12">
+				<label for="name" for="title" class="h5 mb-3" >Title</label>
+				<input name="name" type="text" id="title" class="form-control mb-3" placeholder="Title" value="{{edited_item.name}}" required>
+			</div>
+			<div class="col-12">
+				<label for="description" class="h5 mb-3">Description</label>
+				<textarea name="description" id="description" class="form-control mb-3" rows="10" placeholder="Description" required>{{edited_item.description}}</textarea>
+			</div>
+			<div class="col-12">
+				<a class="btn btn-sm btn-secondary" href="{{ url_for('item_details', category_id=edited_item.category_id, item_id=edited_item.id) }}">Cancel</a>
+				<button class="btn btn-sm btn-primary">Submit</button>
+			</div>
+		</div>
+	</div>
+</form>
+{% endblock %}

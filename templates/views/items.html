@@ -1,0 +1,32 @@
+{% extends "index.html" %}
+{% block content %}
+	<div class="container rounded py-3 my-5 bg-light">
+		<div class="row">
+			<div class="col-4 border-right">
+				<h4 class="my-2">Categories</h4>
+				<ul class="list-unstyled">
+					{% for category in categories %}
+					<li>
+						<a href="{{ url_for('items_for_category', category_id=category.id) }}"><span class="text-success">{{category.name}}</span></a>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+			<div class="col-8">
+				<div class="d-flex flex-wrap my-2">
+					<h4>{{current_category.name}} Items ({{items | length}} items)</h4>
+					<!-- Dont think we need Add item button here since we have it at landing page
+					<a href="" class="btn btn-sm btn-primary ml-auto align-self-center">Add Item</a>
+					-->
+				</div>
+				<ul class="list-unstyled">
+					{% for item in items %}
+					<li>
+						<a href="{{ url_for('item_details', item_id=item.id,category_id=current_category.id) }}"><span class="text-success">{{item.name}}</span></a>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+	</div>
+{% endblock %}

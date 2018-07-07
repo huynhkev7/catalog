@@ -1,0 +1,17 @@
+{% extends "index.html" %}
+{% block content %}
+	<div class="container rounded py-3 my-5 bg-light">
+		<div class="row">
+			<div class="col-12">
+				<h4>Delete Item</h4>
+				<p>Are you sure you want to delete {{item_to_delete.name}}?</p>
+			</div>
+			<div class="col-12">
+				<a class="btn btn-sm btn-secondary" href="{{ url_for('item_details', category_id=item_to_delete.category_id, item_id=item_to_delete.id) }}">No</a>
+				<form class="d-inline" action="#", method="post">
+					<button type="submit" class="btn btn-sm btn-danger">Yes</button>
+				</form>
+			</div>
+		</div>
+	</div>
+{% endblock %}

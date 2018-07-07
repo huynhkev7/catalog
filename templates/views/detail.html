@@ -1,0 +1,23 @@
+{% extends "index.html" %}
+{% block content %}
+	<div class="container rounded py-3 my-5 bg-light">
+		<div class="row">
+			<div class="col-12">
+				<div class="d-flex flex-wrap my-2">
+					<h4>{{item.name}}</h4>
+					<div class="ml-auto align-self-center" role="group">
+						{% if show_button %}
+							<button class="btn btn-sm btn-success"><a class="text-light" href="{{ url_for('update_item', item_id=item.id) }}">Edit</a></button>
+							<button class="btn btn-sm btn-danger"><a class="text-light" href="{{ url_for('remove_item', item_id=item.id) }}">Delete</a></button>
+						{% endif %}
+					</div>			
+				</div>
+			</div>
+			<div class="col-12">	
+				<p>
+					Description: {{item.description}}
+				</p>		
+			</div>
+		</div>
+	</div>
+{% endblock %}

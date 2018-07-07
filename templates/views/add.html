@@ -1,0 +1,37 @@
+{% extends "index.html" %}
+{% block content %}
+<form action="#", method="post" enctype="multipart/form-data">
+	<div class="container rounded py-3 my-5 bg-light">
+		<div class="row">
+			<div class="col-12">
+				<div class="d-flex flex-wrap my-2">
+					<h4>Add Item</h4>
+					<div class="dropdown ml-auto align-self-center">
+						<label for="category">Category:</label>
+						<select name="category" class="btn btn-sm btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Category
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+									{% for category in categories %}
+										<option class="dropdown-item" value="{{category.id}}">{{category.name}}</option>
+									{% endfor %}
+							</div>
+						</select>
+					</div>			
+				</div>
+			</div>	
+			<div class="col-12">
+				<label for="name" class="h5 mb-3" >Name</label>
+				<input type="text" name="name" id="name" class="form-control mb-3" placeholder="Name" required>
+			</div>
+			<div class="col-12">
+				<label for="description" class="h5 mb-3">Description</label>
+				<textarea id="description" name="description" class="form-control mb-3" rows="10" placeholder="Description" required></textarea>
+			</div>
+			<div class="col-12 form-buttons">
+				<a class="btn btn-sm btn-secondary" href="/">Cancel</a>
+				<button class="btn btn-sm btn-primary">Submit</button>
+			</div>
+		</div>
+	</div>
+</form>
+{% endblock %}
