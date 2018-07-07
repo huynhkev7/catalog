@@ -19,9 +19,10 @@ Download the VM configuration by forking or cloning the Udacity [fullstack-nanod
 2. Launch the terminal and ```cd``` into the ```fullstack-nanodegree-vm/vagrant``` directory.
 3. Run the command ```vagrant up```. This will download the Linux operating system and install it.
 4. When completed, run ```vagrant ssh``` to login into the VM.
-5. Run the command ```python setup_database.py```
-6. Run the command ```python populate_database.py```
-7. Run the app with the following command ```python app.py```
-8. Launch your web browser and navigate to [http://localhost:5000/](http://localhost:5000/)
+5. ```cd``` into ```/vagrant/catalog```
+6. Run the command ```python setup_database.py```
+7. Run the command ```python populate_database.py```
+8. Run the app with the following command ```python app.py```
+9. Launch your web browser and navigate to [http://localhost:5000/](http://localhost:5000/)
 ## Authors
 Created by Kevin Huynh
