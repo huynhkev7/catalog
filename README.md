@@ -1,4 +1,4 @@
-# Project 3: App Catalog
+# Project 4: App Catalog
 This python program runs an item catalog application that provides the user the ability to view a list
 of items within a variety of categories. The application provides an authentication system allowing users
 to register in the application. Once registered, users can add, edit, and delete their own items.
