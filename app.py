@@ -4,6 +4,7 @@ import json
 import random
 import requests
 import string
+from functools import wraps
 from setup_database import Base, User, Category, Item
 from flask import session as login_session, make_response,\
     Flask, render_template, request, redirect, jsonify, url_for,\
@@ -24,6 +25,22 @@ engine = create_engine('sqlite:///catalog.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
+
+
+def login_required(f):
+    """check if user is logged in
+
+    Returns:
+        decarator function or redirect to login
+        if user not in session
+    """
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in login_session:
+            flash('User not allowed to access')
+            return redirect('/login')
+        return f(*args, **kwargs)
+    return decorated_function
 
 
 def user_in_session():
@@ -78,16 +95,6 @@ def get_category_in_list(category_id, category_list):
     for category in category_list:
         if category_id == category.id:
             return category
-
-
-def should_redirect_to_login():
-    """Redirect to login page if user not in session
-
-    Return:
-        redirect to login.html
-    """
-    if not user_in_session():
-        return redirect(url_for('login'))
 
 
 def new_user(user_session):
@@ -324,6 +331,7 @@ def item_details(category_id, item_id):
 
 
 @app.route('/catalog/add', methods=['POST', 'GET'])
+@login_required
 def new_item():
     """Create a new item
 
@@ -331,8 +339,6 @@ def new_item():
         GET - serve add.html
         POST - add item and redirect to detail.html
     """
-    should_redirect_to_login()
-
     if request.method == 'POST':
         new_item = Item(
             category_id=int(request.form['category']),
@@ -356,6 +362,7 @@ def new_item():
 
 
 @app.route('/catalog/<int:item_id>/delete', methods=['POST', 'GET'])
+@login_required
 def remove_item(item_id):
     """Remove an item from the database
 
@@ -366,10 +373,16 @@ def remove_item(item_id):
         GET - redirect to delete.html
         POST - remove item and redirect to items.html
     """
-    should_redirect_to_login()
-
     remove_item = session.query(Item).filter_by(id=item_id).one()
     category_id = remove_item.category_id
+
+    # redirect to details page if current user does not own item
+    if remove_item.user_id != login_session['user_id']:
+        return redirect(
+            url_for(
+                'item_details',
+                category_id=category_id,
+                item_id=remove_item.id))
 
     if request.method == 'POST':
         session.delete(remove_item)
@@ -385,6 +398,7 @@ def remove_item(item_id):
 
 
 @app.route('/catalog/<int:item_id>/edit', methods=['POST', 'GET'])
+@login_required
 def update_item(item_id):
     """Update an item from the database
 
@@ -395,9 +409,15 @@ def update_item(item_id):
         GET - serve edit.html
         POST: update an item and redirect to detail.html
     """
-    should_redirect_to_login()
-
     edited_item = session.query(Item).filter_by(id=item_id).one()
+
+    # redirect to details page if current user does not own item
+    if edited_item.user_id != login_session['user_id']:
+        return redirect(
+            url_for(
+                'item_details',
+                category_id=edited_item.category_id,
+                item_id=edited_item.id))
 
     if request.method == 'POST':
         if request.form['category']:
